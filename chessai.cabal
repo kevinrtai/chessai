@@ -1,6 +1,6 @@
 name:                chessai
 version:             0.1.0.0
-synopsis:            Chess AI build in Haskell. Given a board, find the best move given the current state of the board.
+synopsis:            Chess AI built in Haskell. Given a board, find the best move given the current state of the board.
 description:         Please see README.md
 homepage:            https://github.com/kevinrtai/chessai#readme
 license:             BSD3
@@ -15,27 +15,31 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib
-                     , Chess.Base
-                     , Chess.Actions
-  build-depends:       base >= 4.7 && < 5
-                     , containers
+  exposed-modules:     Lib,
+                       Chess.Base,
+                       Chess.Actions
+  build-depends:       base >= 4.7 && < 5,
+                       containers
   default-language:    Haskell2010
 
 executable chessai-exe
   hs-source-dirs:      app
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base
-                     , chessai
+  build-depends:       base, 
+                       chessai
   default-language:    Haskell2010
 
 test-suite chessai-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  build-depends:       base
-                     , chessai
+  build-depends:       base,
+                       chessai,
+                       test-framework,
+                       test-framework-hunit,
+                       HUnit,
+                       containers
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010
 
