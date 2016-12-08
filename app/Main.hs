@@ -4,10 +4,10 @@ import Chess.Actions
 
 main :: IO ()
 main = do
-  let a = Piece Queen Black
-  let b = Piece Queen Black
-  let c = Piece Rook Black
-  let d = Piece Queen White
+  let a = Piece Queen Black 0
+  let b = Piece Queen Black 0
+  let c = Piece Rook Black 0
+  let d = Piece Queen White 0
   putStrLn $ show (a == b)
   putStrLn $ show (a == c)
   putStrLn $ show (a == d)
