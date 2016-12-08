@@ -207,34 +207,34 @@ spec = do
     it "moves Knight northeast from (4, 4) to (5, 6)" $ do
       let starting = Map.fromList [((4, 4), Piece Knight Black)];
       let expected = Map.fromList [((5, 6), Piece Knight Black)];
-      let result   = moveBishop starting (4, 4) (5, 6);
+      let result   = moveKnight starting (4, 4) (5, 6);
       case result of
         Just a -> a `shouldBe` expected
         Nothing -> assertFailure "got Nothing from moveKnight"
     it "moves Knight southeast from (4, 4) to (5, 2)" $ do
       let starting = Map.fromList [((4, 4), Piece Knight Black)];
       let expected = Map.fromList [((5, 2), Piece Knight Black)];
-      let result   = moveBishop starting (4, 4) (5, 2);
+      let result   = moveKnight starting (4, 4) (5, 2);
       case result of
         Just a -> a `shouldBe` expected
         Nothing -> assertFailure "got Nothing from moveKnight"
     it "moves Knight southwest from (4, 4) to (3, 2)" $ do
       let starting = Map.fromList [((4, 4), Piece Knight Black)];
       let expected = Map.fromList [((3, 2), Piece Knight Black)];
-      let result   = moveBishop starting (4, 4) (3, 2);
+      let result   = moveKnight starting (4, 4) (3, 2);
       case result of
         Just a -> a `shouldBe` expected
         Nothing -> assertFailure "got Nothing from moveKnight"
     it "moves Knight northwest from (4, 4) to (3, 6)" $ do
       let starting = Map.fromList [((4, 4), Piece Knight Black)];
       let expected = Map.fromList [((3, 6), Piece Knight Black)];
-      let result   = moveBishop starting (4, 4) (3, 6);
+      let result   = moveKnight starting (4, 4) (3, 6);
       case result of
         Just a -> a `shouldBe` expected
         Nothing -> assertFailure "got Nothing from moveKnight"
     it "returns Nothing when given invalid move" $ do
       let starting = Map.fromList [((4, 4), Piece Knight Black)];
-      let result   = moveBishop starting (4, 4) (5, 5);
+      let result   = moveKnight starting (4, 4) (5, 5);
       case result of
         Just a -> assertFailure "moved Knight with invalid move"
         Nothing -> assertBool "shouldn't fail" True
@@ -354,7 +354,7 @@ spec = do
           Nothing -> assertBool "shouldn't fail" True
     it  "returns Nothing when White pawn is moved in wrong direction" $ do
         let starting = Map.fromList [((1, 4), Piece Pawn White)];
-        let result   = movePawn starting (1, 4) (1, 5)
+        let result   = movePawn starting (1, 4) (1, 3)
         case result of
           Just a -> assertFailure "moved Pawn with invalid move"
           Nothing -> assertBool "shouldn't fail" True
@@ -386,3 +386,37 @@ spec = do
         case result of 
           Just a -> assertFailure "moved Pawn with invalid move"
           Nothing -> assertBool "shouldn't fail" True
+
+  -- movePiece tests
+  describe "movePiece" $ do
+    it  "refuses to move a piece out of bounds" $ do
+      let starting = Map.fromList [((1, 8), Piece Pawn White)];
+      let result   = movePiece starting (1, 8) (1, 9);
+      case result of
+        Just a -> assertFailure "moved out of bounds"
+        Nothing -> assertBool "shouldn't fail" True
+    it  "refuses to move a piece from out of bounds" $ do
+      let starting = Map.fromList [((9, 2), Piece Pawn White)];
+      let result   = movePiece starting (9, 2) (1, 1);
+      case result of
+        Just a -> assertFailure "moved piece from out of bounds"
+        Nothing -> assertBool "shouldn't fail" True
+    it  "refuses to move empty space" $ do
+      let starting = Map.fromList [((1, 1), Piece Pawn White)];
+      let result = movePiece starting (1, 2) (3, 1);
+      case result of
+        Just a -> assertFailure "moved empty space"
+        Nothing -> assertBool "shouldn't fail" True
+    it  "refuses to move out of bounds space" $ do
+      let starting = Map.fromList [((1, 1), Piece Pawn White)];
+      let result = movePiece starting (9, 1) (1, 1);
+      case result of
+        Just a -> assertFailure "moved out of bounds space"
+        Nothing -> assertBool "shouldn't fail" True 
+    it  "refuses to take piece of same color" $ do
+      let starting = Map.fromList [((2, 1), Piece Queen White),
+                                   ((3, 2), Piece Pawn White)];
+      let result = movePiece starting (2, 1) (3, 2);
+      case result of
+        Just a -> assertFailure "took piece of same color"
+        Nothing -> assertBool "shouldn't fail" True
