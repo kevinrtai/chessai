@@ -33,6 +33,8 @@ executable chessai-exe
 test-suite chessai-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
+  other-modules:       Chess.ActionsSpec,
+                       Chess.QuerySpec
   main-is:             Spec.hs
   build-depends:       base,
                        chessai,
