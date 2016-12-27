@@ -5,29 +5,29 @@ import qualified Data.Map as Map
 -- Piece specific move functions that test if the piece at fromIx can move to toIx as though it is a
 -- King, Queen, Bishop, etc. True if possible, False otherwise 
 -- TODO add castling
-queryKing :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool
-queryKing board time fromIx toIx
+queryKing :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryKing board fromIx toIx
   | fromIx /= toIx && (abs (x0 - x1)) <= 1 && (abs (y0 - y1)) <= 1 = True
   | otherwise                                                      = False
   where (x0, y0) = fromIx
         (x1, y1) = toIx
 
-queryQueen :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool
-queryQueen board time fromIx toIx
+queryQueen :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryQueen board fromIx toIx
   | fromIx /= toIx && (abs (x0 - x1) == abs (y0 - y1) || x0 == x1 || y0 == y1) = True
   | otherwise                                                                  = False
   where (x0, y0) = fromIx
         (x1, y1) = toIx
 
-queryBishop :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool
-queryBishop board time fromIx toIx
+queryBishop :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryBishop board fromIx toIx
   | fromIx /= toIx && (abs (x0 - x1) == abs (y0 - y1)) = True 
   | otherwise                                          = False
   where (x0, y0) = fromIx
         (x1, y1) = toIx
 
-queryKnight :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool 
-queryKnight board time fromIx toIx
+queryKnight :: Board -> (Int, Int) -> (Int, Int) -> Bool 
+queryKnight board fromIx toIx
   | fromIx /= toIx && ((dx == 1 && dy == 2) || (dx == 2 && dy == 1)) = True
   | otherwise                                                        = False
   where (x0, y0) = fromIx
@@ -35,15 +35,15 @@ queryKnight board time fromIx toIx
         dx       = abs (x0 - x1)
         dy       = abs (y0 - y1)
 
-queryRook :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool
-queryRook board time fromIx toIx
+queryRook :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryRook board fromIx toIx
   | fromIx /= toIx && (x0 == x1 || y0 == y1) = True
   | otherwise                                = False
   where (x0, y0) = fromIx
         (x1, y1) = toIx
 
-queryPawnNormal :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool
-queryPawnNormal board time fromIx toIx
+queryPawnNormal :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryPawnNormal board fromIx toIx
   | fromIx == toIx                                                                    = False
   | dx == 1 && taken /= None && color target /= color taken && (y1 - y0) == direction = True
   | dx > 0 || taken /= None                                                           = False

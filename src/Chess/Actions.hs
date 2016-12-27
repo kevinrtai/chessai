@@ -26,34 +26,34 @@ movePiece board time fromIx toIx
 -- TODO add castling
 moveKing :: Board -> Int -> (Int, Int) -> (Int, Int) -> Maybe Board
 moveKing board time fromIx toIx
-  | queryKing board time fromIx toIx = move board time fromIx toIx
+  | queryKing board fromIx toIx = move board time fromIx toIx
   | otherwise                        = Nothing
 
 moveQueen :: Board -> Int -> (Int, Int) -> (Int, Int) -> Maybe Board
 moveQueen board time fromIx toIx
-  | queryQueen board time fromIx toIx = move board time fromIx toIx
+  | queryQueen board fromIx toIx = move board time fromIx toIx
   | otherwise                         = Nothing
 
 moveBishop :: Board -> Int -> (Int, Int) -> (Int, Int) -> Maybe Board
 moveBishop board time fromIx toIx
-  | queryBishop board time fromIx toIx = move board time fromIx toIx
+  | queryBishop board fromIx toIx = move board time fromIx toIx
   | otherwise                          = Nothing 
 
 moveKnight :: Board -> Int -> (Int, Int) -> (Int, Int) -> Maybe Board
 moveKnight board time fromIx toIx
-  | queryKnight board time fromIx toIx = move board time fromIx toIx
+  | queryKnight board fromIx toIx = move board time fromIx toIx
   | otherwise                          = Nothing
 
 moveRook :: Board -> Int -> (Int, Int) -> (Int, Int) -> Maybe Board
 moveRook board time fromIx toIx
-  | queryRook board time fromIx toIx = move board time fromIx toIx
+  | queryRook board fromIx toIx = move board time fromIx toIx
   | otherwise                       = Nothing
 
 movePawn :: Board -> Int -> (Int, Int) -> (Int, Int) -> Maybe Board
 movePawn board time fromIx toIx
-  | queryPawnNormal board time fromIx toIx = move board time fromIx toIx
-  | queryPawnEP board time fromIx toIx     = move takenEnBd time fromIx toIx
-  | otherwise                              = Nothing
+  | queryPawnNormal board fromIx toIx  = move board time fromIx toIx
+  | queryPawnEP board time fromIx toIx = move takenEnBd time fromIx toIx
+  | otherwise                          = Nothing
   where target     = Map.findWithDefault None fromIx board
         direction  = if (color target == White)
                       then 1 else -1
