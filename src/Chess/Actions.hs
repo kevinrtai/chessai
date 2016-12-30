@@ -16,9 +16,9 @@ movePiece board time fromIx toIx
                                                                         Piece Rook c ts -> moveRook board time fromIx toIx
                                                                         Piece Pawn c ts -> movePawn board time fromIx toIx
                                                                         None -> Nothing
-  | otherwise = Nothing
+  | otherwise                                          = Nothing
   where target = Map.findWithDefault None fromIx board
-        taken = Map.findWithDefault None toIx board
+        taken  = Map.findWithDefault None toIx board
 
 
 -- Piece specific move functions that moves the piece at fromIx to toIx as though it is a 
