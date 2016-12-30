@@ -3,8 +3,8 @@ import Chess.Base
 import qualified Data.Map as Map
 
 -- Tests if the current space is under attack
-queryCheck :: Board -> Int -> (Int, Int) -> Bool
-queryCheck board time toIx = Map.foldWithKey (\k a b -> (queryPiece board time k toIx) || b) False board
+queryCheck :: Board -> Int -> (Int, Int) -> Color -> Bool
+queryCheck board time toIx friend = Map.foldWithKey (\k a b -> (friend /= color a && queryPiece board time k toIx) || b) False board
 
 -- Convenience function that looks up the type of piece at fromIx and tests if it can move to toIx
 queryPiece :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool
