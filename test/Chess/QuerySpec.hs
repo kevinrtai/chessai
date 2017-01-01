@@ -5,9 +5,48 @@ import Test.HUnit
 import Chess.Base
 import Chess.Query
 import Data.Map as Map
+import Data.Set as Set
 
 spec :: Spec
 spec = do
+  -- adjacent tests
+  describe "adjacent" $ do
+    it  "returns all adjacent spaces surrounding an internal space" $ do
+        let expected = Set.fromList [(3, 3), (3, 4), (3, 5), (4, 3), (4, 5), (5, 3), (5, 4), (5, 5)];
+        let result = Set.fromList $ adjacent (4, 4)
+        result `shouldBe` expected
+    it  "returns all adjacent spaces surrounding a space on the bottom edge of the board" $ do
+        let expected = Set.fromList [(3, 1), (3, 2), (4, 2), (5, 2), (5, 1)];
+        let result = Set.fromList $ adjacent (4, 1);
+        result `shouldBe` expected
+    it  "returns all adjacent spaces surrounding a space on the left edge of the board" $ do
+        let expected = Set.fromList [(1, 5), (2, 5), (2, 4), (2, 3), (1, 3)];
+        let result = Set.fromList $ adjacent (1, 4);
+        result `shouldBe` expected
+    it  "returns all adjacent spaces surrounding a space on the top edge of the board" $ do
+        let expected = Set.fromList [(3, 8), (3, 7), (4, 7), (5, 7), (5, 8)];
+        let result = Set.fromList $ adjacent (4, 8);
+        result `shouldBe` expected
+    it  "returns all adjacent spaces surrounding a space on the right edge of the board" $ do
+        let expected = Set.fromList [(8, 5), (7, 5), (7, 4), (7, 3), (8, 3)];
+        let result = Set.fromList $ adjacent (8, 4);
+        result `shouldBe` expected
+    it  "returns all adjacent spaces surrounding the bottom right space" $ do
+        let expected = Set.fromList [(7, 1), (7, 2), (8, 2)];
+        let result = Set.fromList $ adjacent (8, 1);
+        result `shouldBe` expected
+    it  "returns all adjacent spaces surrounding the bottom left space" $ do
+        let expected = Set.fromList [(2, 1), (2, 2), (1, 2)];
+        let result = Set.fromList $ adjacent (1, 1);
+        result `shouldBe` expected
+    it  "returns all adjacent spaces surrounding the top left space" $ do
+        let expected = Set.fromList [(1, 7), (2, 7), (2, 8)];
+        let result = Set.fromList $ adjacent (1, 8);
+        result `shouldBe` expected
+    it  "returns all adjacent spaces surrounding the top right space" $ do
+        let expected = Set.fromList [(7, 8), (7, 7), (8, 7)];
+        let result = Set.fromList $ adjacent (8, 8);
+        result `shouldBe` expected
   -- queryCheck tests
   describe "queryCheck" $ do
     it  "returns True for space next to King" $ do
