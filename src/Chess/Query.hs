@@ -2,6 +2,18 @@ module Chess.Query where
 import Chess.Base
 import qualified Data.Map as Map
 
+-- Tests if the current space and all adjacent spaces are under attack
+queryCheckmate :: Board -> Int -> (Int, Int) -> Color -> Bool
+queryCheckmate board time toIx friend = queryCheck board time toIx friend && all queryFunc adj
+  where adj = adjacent toIx
+        queryFunc = \x -> queryCheck board time x friend
+
+-- Helper function to generate all of the adjacent coordinates
+adjacent :: (Int, Int) -> [(Int, Int)]
+adjacent spot = filter (\x -> inRange x && x /= spot) possibles
+  where (x, y) = spot
+        possibles = [(a, b) | a <- [x-1..x+1], b <- [y-1..y+1]]
+
 -- Tests if the current space is under attack
 queryCheck :: Board -> Int -> (Int, Int) -> Color -> Bool
 queryCheck board time toIx friend = Map.foldWithKey (\k a b -> (friend /= color a && queryPiece board time k toIx) || b) False board
