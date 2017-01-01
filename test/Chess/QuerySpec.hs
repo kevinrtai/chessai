@@ -9,6 +9,14 @@ import Data.Set as Set
 
 spec :: Spec
 spec = do
+  -- queryCheckmate tests
+  describe "queryCheckmate" $ do
+    it  "returns True for space in checkmate" $ do
+        let starting = Map.fromList [((3, 3), Piece Queen White 0), ((5, 5), Piece Queen White 0)];
+        let expected = True;
+        let result = queryCheckmate starting 1 (4, 4) Black;
+        result `shouldBe` expected
+
   -- adjacent tests
   describe "adjacent" $ do
     it  "returns all adjacent spaces surrounding an internal space" $ do
@@ -80,6 +88,11 @@ spec = do
                                      ((2, 3), Piece Rook White 20)];
         let expected = True;
         let result = queryCheck starting 0 (4, 5) White;
+        result `shouldBe` expected
+    it  "returns True for Queen next to King" $ do
+        let starting = Map.fromList [((3, 3), Piece Queen White 0), ((5, 5), Piece Queen White 0)];
+        let expected = True;
+        let result = queryCheck starting 1 (4, 4) Black;
         result `shouldBe` expected
 
   -- queryKing tests
