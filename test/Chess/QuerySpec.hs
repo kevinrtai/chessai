@@ -16,6 +16,11 @@ spec = do
         let expected = True;
         let result = queryCheckmate starting 1 (4, 4) Black;
         result `shouldBe` expected
+    it  "returns False for space not in checkmate" $ do
+        let starting = Map.fromList [((3, 3), Piece Queen White 0), ((4, 4), Piece King Black 0)];
+        let expected = False;
+        let result = queryCheckmate starting 1 (4, 4) Black;
+        result `shouldBe` expected
 
   -- adjacent tests
   describe "adjacent" $ do
