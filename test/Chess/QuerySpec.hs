@@ -38,6 +38,13 @@ spec = do
         let expected = False;
         let result = queryCheckmate starting 1 (1, 1) Black;
         result `shouldBe` expected
+    it  "returns False when the attacking piece can be blocked" $ do
+        let starting = Map.fromList [((1, 1), Piece King Black 0),
+                                     ((1, 2), Piece Rook Black 0),
+                                     ((2, 1), Piece Rook Black 0),
+                                     ((3, 3), Piece Queen White 0)];
+        let expected = False;
+        result `shouldBe` expected
 
   -- adjacent tests
   describe "adjacent" $ do
