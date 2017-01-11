@@ -21,6 +21,23 @@ spec = do
         let expected = False;
         let result = queryCheckmate starting 1 (4, 4) Black;
         result `shouldBe` expected
+    it  "returns True when the King is surrounded by other pieces" $ do
+        let starting = Map.fromList [((1, 1), Piece King Black 0), 
+                                     ((1, 2), Piece Rook Black 0), 
+                                     ((2, 2), Piece Bishop Black 0),
+                                     ((2, 1), Piece Pawn Black 0),
+                                     ((2, 3), Piece Knight Black 0)];
+        let expected = True;
+        let result = queryCheckmate starting 1 (1, 1) Black;
+        result `shouldBe` expected
+    it  "returns False when a piece other than the King can take the attacking piece" $ do
+        let starting = Map.fromList [((1, 1), Piece King Black 0),
+                                     ((1, 2), Piece Bishop Black 0),
+                                     ((2, 2), Piece Pawn Black 0),
+                                     ((2, 1), Piece Pawn Black 0)];
+        let expected = False;
+        let result = queryCheckmate starting 1 (1, 1) Black;
+        result `shouldBe` expected
 
   -- adjacent tests
   describe "adjacent" $ do
