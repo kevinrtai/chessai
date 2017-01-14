@@ -171,6 +171,12 @@ spec = do
         let expected = False;
         let result = queryKing starting (4, 4) (6, 4); 
         result `shouldBe` expected
+    it  "returns True for castling Kingside" $ do
+        let starting = Map.fromList [((1, 5), Piece King Black 0),
+                                     ((1, 8), Piece Rook Black 0)];
+        let expected = True;
+        let result = queryKing starting (4, 4) (6, 4);
+        result `shouldBe` expected
 
   -- queryQueen tests
   describe "queryQueen" $ do
