@@ -44,6 +44,7 @@ spec = do
                                      ((2, 1), Piece Rook Black 0),
                                      ((3, 3), Piece Queen White 0)];
         let expected = False;
+        let result = queryCheckmate starting 1 (1, 1) Black;
         result `shouldBe` expected
 
   -- adjacent tests
