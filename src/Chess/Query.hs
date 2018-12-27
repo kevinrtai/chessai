@@ -3,23 +3,23 @@ import Chess.Base
 import qualified Data.Map as Map
 
 -- Tests if the current space and all adjacent spaces are under attack
-queryCheckmate :: Board -> Int -> (Int, Int) -> Color -> Bool
+queryCheckmate :: Board -> Timestamp -> Location -> Color -> Bool
 queryCheckmate board time toIx friend = queryCheck board time toIx friend && all queryFunc adj
   where adj = adjacent toIx
         queryFunc = \x -> queryCheck board time x friend
 
 -- Helper function to generate all of the adjacent coordinates
-adjacent :: (Int, Int) -> [(Int, Int)]
+adjacent :: Location -> [Location]
 adjacent spot = filter (\x -> inRange x && x /= spot) possibles
   where (x, y) = spot
         possibles = [(a, b) | a <- [x-1..x+1], b <- [y-1..y+1]]
 
 -- Tests if the current space is under attack
-queryCheck :: Board -> Int -> (Int, Int) -> Color -> Bool
+queryCheck :: Board -> Timestamp -> Location -> Color -> Bool
 queryCheck board time toIx friend = Map.foldWithKey (\k a b -> (friend /= color a && queryPiece board time k toIx) || b) False board
 
 -- Convenience function that looks up the type of piece at fromIx and tests if it can move to toIx
-queryPiece :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool
+queryPiece :: Board -> Timestamp -> Location -> Location -> Bool
 queryPiece board time fromIx toIx
   | not (inRange fromIx) || not (inRange toIx)         = False
   | (target == None)                                   = False
@@ -37,28 +37,28 @@ queryPiece board time fromIx toIx
 -- Piece specific move functions that test if the piece at fromIx can move to toIx as though it is a
 -- King, Queen, Bishop, etc. True if possible, False otherwise 
 -- TODO add castling
-queryKing :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryKing :: Board -> Location -> Location -> Bool
 queryKing board fromIx toIx
   | fromIx /= toIx && (abs (x0 - x1)) <= 1 && (abs (y0 - y1)) <= 1 = True
   | otherwise                                                      = False
   where (x0, y0) = fromIx
         (x1, y1) = toIx
 
-queryQueen :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryQueen :: Board -> Location -> Location -> Bool
 queryQueen board fromIx toIx
   | fromIx /= toIx && (abs (x0 - x1) == abs (y0 - y1) || x0 == x1 || y0 == y1) = True
   | otherwise                                                                  = False
   where (x0, y0) = fromIx
         (x1, y1) = toIx
 
-queryBishop :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryBishop :: Board -> Location -> Location -> Bool
 queryBishop board fromIx toIx
   | fromIx /= toIx && (abs (x0 - x1) == abs (y0 - y1)) = True 
   | otherwise                                          = False
   where (x0, y0) = fromIx
         (x1, y1) = toIx
 
-queryKnight :: Board -> (Int, Int) -> (Int, Int) -> Bool 
+queryKnight :: Board -> Location -> Location -> Bool 
 queryKnight board fromIx toIx
   | fromIx /= toIx && ((dx == 1 && dy == 2) || (dx == 2 && dy == 1)) = True
   | otherwise                                                        = False
@@ -67,14 +67,14 @@ queryKnight board fromIx toIx
         dx       = abs (x0 - x1)
         dy       = abs (y0 - y1)
 
-queryRook :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryRook :: Board -> Location -> Location -> Bool
 queryRook board fromIx toIx
   | fromIx /= toIx && (x0 == x1 || y0 == y1) = True
   | otherwise                                = False
   where (x0, y0) = fromIx
         (x1, y1) = toIx
 
-queryPawnNormal :: Board -> (Int, Int) -> (Int, Int) -> Bool
+queryPawnNormal :: Board -> Location -> Location -> Bool
 queryPawnNormal board fromIx toIx
   | fromIx == toIx                                                                    = False
   | dx == 1 && taken /= None && color target /= color taken && (y1 - y0) == direction = True
@@ -93,7 +93,7 @@ queryPawnNormal board fromIx toIx
         dx         = abs (x0 - x1)
         dy         = abs (y0 - y1)
 
-queryPawnEP :: Board -> Int -> (Int, Int) -> (Int, Int) -> Bool
+queryPawnEP :: Board -> Timestamp -> Location -> Location -> Bool
 queryPawnEP board time fromIx toIx
   | fromIx /= toIx && dx == 1 && taken == None && enpassant /= None 
     && color target /= color enpassant && piece enpassant == Pawn 
@@ -113,5 +113,5 @@ queryPawnEP board time fromIx toIx
         dy         = abs (y0 - y1)
  
 -- Helper functions
-inRange :: (Int, Int) -> Bool
+inRange :: Location -> Bool
 inRange (x, y) = x >= 1 && x <= 8 && y >= 1 && y <= 8

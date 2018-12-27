@@ -11,8 +11,13 @@ data Piece = Piece { piece :: PieceType
                    , ts    :: Int} 
              | None deriving (Show, Eq)
 
-type Board = Map.Map (Int, Int) Piece
+type Location = (Int, Int)
 
+type Timestamp = Int
+
+type Board = Map.Map Location Piece
+
+-- Increment the timestamp of the piece
 pieceIncTs :: Piece -> Piece
 pieceIncTs (Piece p c ts) = Piece p c (ts + 1)
 
